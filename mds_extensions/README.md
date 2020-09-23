@@ -6,7 +6,7 @@
 - [Aggregate Status Changes](#aggregate-status-changes)
     - [Status Changes - Query Parameters](#status-changes---query-parameters)
 - [Aggregate Trips](#aggregate-trips)
-    - [Trips - Query Parameters](#trips---query_parameters)
+    - [Trips - Query Parameters](#trips---query-parameters)
 
 ## General Information
 
@@ -37,6 +37,22 @@ reason within a hexagonal area based on the last known lat/long of the vehicle.
 **HTTP Method:** `GET`
 **Data payload format:** `{ "status_changes": [] }`, an array of objects with the following structure:
 
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `summary`  | Array | Array of [Event counts](#event-counts))  |
+|  `location` |  GeoJSON Point | A [GeoJSON Polygon object](http://wiki.geojson.org/GeoJSON_draft_version_6#Polygon) defining the bounding area. (Currently, all are hexagonal, but may accommodate different shapes based on future implementation changes.) The current [resolution](https://uber.github.io/h3/#/documentation/core-library/resolution-table) for hex is 8) |
+|   |   |   |
+
+### Event counts
+
+List of counts by `event_type` and `event_type_reason`
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `event_type` | String | The event type of the last status change event reported in the MDS feed for the vehicle. See [vehicle status](https://github.com/openmobilityfoundation/mobility-data-specification/blob/dev/general-information.md#vehicle-state-events) table. |
+| `event_type_reason` | String | The reason for the status change of the last status change event reported in the MDS feed for the vehicle. See [vehicle states](https://github.com/openmobilityfoundation/mobility-data-specification/blob/dev/general-information.md#vehicle-state-events) table.
+| `volume` | Integer | The count of vehicles by event_type and event_type_reason during the period of time |
+
 [Top][toc]
 
 ### Status Changes - Query Parameters
@@ -58,5 +74,9 @@ when `max_end_time` and `min_end_time` are less than an hour apart.
 **Endpoint:** `/aggregate/trips`
 **HTTP Method:** `GET`
 **Data payload format:** `{ "trips": [] }`, an array of objects with the following structure:
+
+[Top][toc]
+
+### Trips - Query Parameters
 
 [Top][toc]

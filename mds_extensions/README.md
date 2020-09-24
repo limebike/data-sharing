@@ -41,7 +41,6 @@ reason within a hexagonal area based on the last known lat/long of the vehicle.
 | -----  | ---- | --------  |
 | `summary`  | Array | Array of [Event counts](#event-counts))  |
 |  `location` |  GeoJSON Point | A [GeoJSON Polygon object](http://wiki.geojson.org/GeoJSON_draft_version_6#Polygon) defining the bounding area. (Currently, all are hexagonal, but may accommodate different shapes based on future implementation changes.) The current [resolution](https://uber.github.io/h3/#/documentation/core-library/resolution-table) for hex is 8) |
-|   |   |   |
 
 ### Event counts
 
@@ -53,11 +52,56 @@ List of counts by `event_type` and `event_type_reason`
 | `event_type_reason` | String | The reason for the status change of the last status change event reported in the MDS feed for the vehicle. See [vehicle states](https://github.com/openmobilityfoundation/mobility-data-specification/blob/dev/general-information.md#vehicle-state-events) table.
 | `volume` | Integer | The count of vehicles by event_type and event_type_reason during the period of time |
 
+**Example usage:**
+```
+# Request
+
+curl \
+-H "Accept: application/vnd.mds.provider+json;version=0.3" \
+-H "Authorization: Bearer $LIME_TOKEN" \
+-X GET \
+"https://data.lime.bike/api/partners/v1/mds/{city}/aggregate/status_changes?min_end_time=1598670000000&max_end_time=1598673600000"
+
+# Response
+
+{
+    “status_changes”: [
+        {
+            "summary": [
+                {
+                    "event_type": "available",
+                    "event_type_reason": "user_drop_off",
+                    "volume": 30
+                },
+                {
+                    "event_type": "reserved",
+                    "event_type_reason": "user_pick_up",
+                    "volume": 21
+                }
+            ],
+        "location": {
+            "type": "Polygon",
+            "coordinates": [ … ]
+        }
+      },
+    ]
+}
+
+```
+
 [Top][toc]
 
 ### Status Changes - Query Parameters
 
 The `/aggregate/status_changes` API will allow querying aggregate status changes with the following query parameters:
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` after the given time
+| `max_ent_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` before the given time |
+
+If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
+endpoint will return the most recent hour for which it has data.
 
 [Top][toc]
 
@@ -75,8 +119,45 @@ when `max_end_time` and `min_end_time` are less than an hour apart.
 **HTTP Method:** `GET`
 **Data payload format:** `{ "trips": [] }`, an array of objects with the following structure:
 
+
+**Example usage:**
+```
+# Request
+
+curl \
+-H "Accept: application/vnd.mds.provider+json;version=0.3" \
+-H "Authorization: Bearer $LIME_TOKEN" \
+-X GET \
+"https://data.lime.bike/api/partners/v1/mds/{city}/aggregate/trips?min_end_time=1598670000000&max_end_time=1598673600000"
+
+# Response
+
+{	
+	“trips”: [ 
+        {
+    		"volume": 25,
+    		"location": {
+                "type": "Polygon",
+                "coordinates": [...]
+    		}
+  	    }
+    ]
+}
+
+```
+
 [Top][toc]
 
 ### Trips - Query Parameters
+
+The `/aggregate/trips` API will allow querying aggregate trips with the following query parameters:
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` after the given time
+| `max_ent_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` before the given time |
+
+If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
+endpoint will return the most recent hour for which it has data.
 
 [Top][toc]

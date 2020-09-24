@@ -28,7 +28,7 @@ The MDS Provider API is the primary way that Lime shares data with governmental 
 and third parties. MDS Provider is a granular API, in that it shares individual trips and vehicle status changes, 
 and doesn’t provide any kind of data aggregation or intelligence on top of such data.
 Lime has developed API extensions to MDS Provider to share aggregated insights on top of MDS, 
-which we call [MDS Extension](mds_extensions/README.md).
+which we call [MDS Extensions](mds_extensions/README.md).
 
 ### Goals
 

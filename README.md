@@ -24,6 +24,7 @@ Lime has developed API extensions to MDS Provider to share aggregated insights o
 which we call [MDS Extension](mds_extensions/README.md).
 
 ### Goals
+
 - **Provide insights:** The data published through MDS Extensions provides insights on top of Lime’s data. This will 
 help improve MDS from its current form.
 

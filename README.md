@@ -13,6 +13,13 @@
 
 ## Authentication
 
+API calls are authenticated via a bearer token specified in the `Authorization` header of the request(s).
+
+```
+Authorization: Bearer <LIME_TOKEN>
+```
+
+
 [Top](#Table-of-Contents)
 
 ## MDS Extensions

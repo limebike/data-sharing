@@ -101,7 +101,7 @@ The `/aggregate/status_changes` API will allow querying aggregate status changes
 | Field  | Type | Comments  |
 | -----  | ---- | --------  |
 | `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` after the given time
-| `max_ent_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` before the given time |
+| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` before the given time |
 
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.
@@ -159,7 +159,7 @@ The `/aggregate/trips` API will allow querying aggregate trips with the followin
 | Field  | Type | Comments  |
 | -----  | ---- | --------  |
 | `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` after the given time
-| `max_ent_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` before the given time |
+| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` before the given time |
 
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.

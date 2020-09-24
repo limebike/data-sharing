@@ -4,7 +4,7 @@
 
 - [About](#about)
 - [Authentication](#authentication)
-- [MDS Extensions](#mds-extenstions)
+- [MDS Extensions](#mds-extensions)
   - [Goals](#goals)
  
 ## About

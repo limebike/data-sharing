@@ -35,7 +35,9 @@ reason within a hexagonal area based on the last known lat/long of the vehicle.
 - To ensure k-anonymity, the endpoint will not surface locations where the volume is less than 5.
 
 **Endpoint:** `/aggregate/status_changes`
+
 **HTTP Method:** `GET`
+
 **Data payload format:** `{ "status_changes": [] }`, an array of objects with the following structure:
 
 | Field  | Type | Comments  |
@@ -117,9 +119,10 @@ GPS coordinate that overlaps with the location’s bounding area.
 when `max_end_time` and `min_end_time` are less than an hour apart.
 
 **Endpoint:** `/aggregate/trips`
-**HTTP Method:** `GET`
-**Data payload format:** `{ "trips": [] }`, an array of objects with the following structure:
 
+**HTTP Method:** `GET`
+
+**Data payload format:** `{ "trips": [] }`, an array of objects with the following structure:
 
 **Example usage:**
 ```

@@ -9,11 +9,11 @@
  
 ## About
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ## Authentication
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ## MDS Extensions
 
@@ -50,4 +50,4 @@ other data privacy and security regulations and standards.
     principles.  The aggregated feed allows agencies to receive data without needing to worry about data privacy or
     security
 
-[Top][toc]
+[Top](#Table-of-Contents)

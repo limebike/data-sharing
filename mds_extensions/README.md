@@ -21,7 +21,7 @@ identification, [GeoJSON for geographic data](https://tools.ietf.org/html/rfc794
 All endpoints described within this document aggregate data by geospatial area. Data aggregations are subdivided into 
 hexagonal areas, which will be generated using the H3 library published by Uber. 
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ## Aggregate Status Changes
 
@@ -90,7 +90,7 @@ curl \
 
 ```
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ### Status Changes - Query Parameters
 
@@ -104,7 +104,7 @@ The `/aggregate/status_changes` API will allow querying aggregate status changes
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ## Aggregate Trips
 
@@ -147,7 +147,7 @@ curl \
 
 ```
 
-[Top][toc]
+[Top](#Table-of-Contents)
 
 ### Trips - Query Parameters
 
@@ -161,4 +161,4 @@ The `/aggregate/trips` API will allow querying aggregate trips with the followin
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.
 
-[Top][toc]
+[Top](#Table-of-Contents)

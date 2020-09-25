@@ -1,15 +1,10 @@
-# data-sharing
+# Lime Data Sharing
 
 ## Table of Contents
 
-- [About](#about)
 - [Authentication](#authentication)
 - [MDS Extensions](#mds-extensions)
   - [Goals](#goals)
- 
-## About
-
-[Top](#Table-of-Contents)
 
 ## Authentication
 

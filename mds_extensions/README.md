@@ -263,7 +263,7 @@ The `/aggregate/status_counts` API will allow querying aggregate status_counts w
 | -----  | ---- | --------  |
 | `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status_counts` after the given time.  |
 | `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status_counts` before the given time. |
-| `lookback_days`| Integer | Number of days to look back for vehicle status.  **Note:** Vehicles that have not had an event in this number of days will not appear in the counts. |
+| `lookback_days`| Integer | Number of days to look back for vehicle status. Valid `lookback_days` [2, 5, 7, 15, 30]. **Note:** Vehicles that have not had an event in this number of days will not appear in the counts. |
 
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.

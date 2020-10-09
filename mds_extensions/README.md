@@ -7,6 +7,8 @@
     - [Status Changes - Query Parameters](#status-changes---query-parameters)
 - [Aggregate Trips](#aggregate-trips)
     - [Trips - Query Parameters](#trips---query-parameters)
+- [Aggregate Status Counts](#aggregate-status-counts)
+    - [Status Counts - Query Parameters](#status-counts---query-parameters)
 
 ## General Information
 
@@ -42,8 +44,8 @@ reason within a hexagonal area based on the last known lat/long of the vehicle.
 
 | Field  | Type | Comments  |
 | -----  | ---- | --------  |
-| `summary`  | Array | Array of [Event counts](#event-counts))  |
-|  `location` |  GeoJSON Point | A [GeoJSON Polygon object](http://wiki.geojson.org/GeoJSON_draft_version_6#Polygon) defining the bounding area. (Currently, all are hexagonal, but may accommodate different shapes based on future implementation changes.) The current [resolution](https://uber.github.io/h3/#/documentation/core-library/resolution-table) for hex is 8) |
+| `summary`  | Array | Array of [Event counts](#event-counts).  |
+|  `location` |  GeoJSON Point | A [GeoJSON Polygon object](http://wiki.geojson.org/GeoJSON_draft_version_6#Polygon) defining the bounding area. (Currently, all are hexagonal, but may accommodate different shapes based on future implementation changes) The current [resolution](https://uber.github.io/h3/#/documentation/core-library/resolution-table) for hex is 8. |
 
 ### Event counts
 
@@ -53,7 +55,7 @@ List of counts by `event_type` and `event_type_reason`
 | -----  | ---- | --------  |
 | `event_type` | String | The event type of the last status change event reported in the MDS feed for the vehicle. See [vehicle status](https://github.com/openmobilityfoundation/mobility-data-specification/blob/dev/general-information.md#vehicle-state-events) table. |
 | `event_type_reason` | String | The reason for the status change of the last status change event reported in the MDS feed for the vehicle. See [vehicle states](https://github.com/openmobilityfoundation/mobility-data-specification/blob/dev/general-information.md#vehicle-state-events) table.
-| `volume` | Integer | The count of vehicles by event_type and event_type_reason during the period of time |
+| `volume` | Integer | The count of vehicles by event_type and event_type_reason during the period of time. |
 
 **Example usage:**
 ```
@@ -100,8 +102,8 @@ The `/aggregate/status_changes` API will allow querying aggregate status changes
 
 | Field  | Type | Comments  |
 | -----  | ---- | --------  |
-| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` after the given time
-| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` before the given time |
+| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` after the given time.  |
+| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status changes` before the given time. |
 
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.
@@ -123,6 +125,11 @@ when `max_end_time` and `min_end_time` are less than an hour apart.
 **HTTP Method:** `GET`
 
 **Data payload format:** `{ "trips": [] }`, an array of objects with the following structure:
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `volume`  | Integer | The count of trips for unique users that have passed through the location’s bounding area during the period of time.  |
+|  `location` |  GeoJSON Point | A [GeoJSON Polygon object](http://wiki.geojson.org/GeoJSON_draft_version_6#Polygon) defining the bounding area. (Currently, all are hexagonal, but may accommodate different shapes based on future implementation changes.) The current [resolution](https://uber.github.io/h3/#/documentation/core-library/resolution-table) for hex is 8. |
 
 **Example usage:**
 ```
@@ -158,8 +165,86 @@ The `/aggregate/trips` API will allow querying aggregate trips with the followin
 
 | Field  | Type | Comments  |
 | -----  | ---- | --------  |
-| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` after the given time
-| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` before the given time |
+| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` after the given time.  |
+| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `trips` before the given time. |
+
+If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
+endpoint will return the most recent hour for which it has data.
+
+[Top](#Table-of-Contents)
+
+## Aggregate Status Counts
+
+- The aggregate status counts endpoint will return a list of MDS status change counts by event type 
+  based on last reported status changes for vehicles in the specified sliding window.
+- The `data` property will provide information about `vehicle_type`.
+  - A `vehicle_type` list , will contain the hour_utc and event_type(s) count, which is the number of vehicles 
+    in that state.
+- The aggregations will be in one hour segments.
+
+**Endpoint:** `/aggregate/status_counts`
+
+**HTTP Method:** `GET`
+
+**Data payload format:** `{ "data": { "scooter": [] } }`, an array of objects with the following structure:
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `data`  | Objects | Holds the status counts for each `vehicle type`.  |
+|  `lookback_days` |  Integer | Number of days to look back for vehicle status. |
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `hour_utc`  | datetime [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) | Specifies the datetime when status count aggregation was performed.  |
+| `lookback_days` |  Integer | Number of days to look back for vehicle status, `default:` **2d** |
+
+**Example usage:**
+```
+# Request
+
+curl \
+-H "Accept: application/vnd.mds.provider+json;version=0.3" \
+-H "Authorization: Bearer $LIME_TOKEN" \
+-X GET \
+"https://data.lime.bike/api/partners/v1/mds/{city}/aggregate/status_counts?min_end_time=1602176400000&max_end_time=1602183600000&lookback_days=2"
+
+# Response
+
+{
+    "data": {
+        "scooter": [
+            {
+                "hour_utc": "2020-10-08T17:00:00.000Z",
+                "available": 156,
+                "reserved": 31,
+                "unavailable": 37,
+                "removed": 218
+            },
+            {
+                "hour_utc": "2020-10-08T18:00:00.000Z",
+                "available": 150,
+                "removed": 218,
+                "unavailable": 36,
+                "reserved": 34
+            }
+        ]
+    },
+    "lookback_days": 2
+}
+
+```
+
+[Top](#Table-of-Contents)
+
+### Status Counts - Query Parameters
+
+The `/aggregate/status_counts` API will allow querying aggregate status_counts with the following query parameters:
+
+| Field  | Type | Comments  |
+| -----  | ---- | --------  |
+| `min_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status_counts` after the given time.  |
+| `max_end_time` | [Timestamp](https://en.wikipedia.org/wiki/Unix_time) | filter for `status_counts` before the given time. |
+| `lookback_days`| Integer | Number of days to look back for vehicle status. |
 
 If the timestamps are not hour-bounded, the endpoint will round down to the most recent hour. If not provided, the
 endpoint will return the most recent hour for which it has data.
